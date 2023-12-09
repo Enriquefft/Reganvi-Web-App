@@ -72,7 +72,7 @@ function HomeScreen() {
       return (
             <> 
             <div className="w-full" style={firstBanner}>
-                  {/* First Row */}
+                  {/* First Banner */}
                   <div className='flex bg-gray-800 bg-opacity-50'>
                         <Container className='py-40 text-white' >                  
                               <h1 style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }} className="mt-3 p-3">Encuentra los mejores proveedores locales de materiales reciclados</h1>

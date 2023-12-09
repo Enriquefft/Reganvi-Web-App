@@ -41,3 +41,26 @@ export const countryCodes = [
       { code: '+598', name: 'Uruguay' }
 
 ]
+
+export const cotizationTypes = [
+      { id:1, name: 'bulk'},
+      { id:2, name: 'pressed'},
+      { id:3, name: 'ground'},
+      { id:4, name: 'raw'},
+]
+
+export const unitsOfMeasure = [
+      { id:1, name: 'KG'},
+      { id:2, name: 'TON'},
+      { id:3, name: 'G'},
+      { id:4, name: 'LB'},
+      { id:5, name: 'L'},
+      { id:6, name: 'ML'},
+      { id:7, name: 'M3'},
+      { id:8, name: 'CM3'},
+      { id:9, name: 'EA'},
+      { id:10, name: 'DOZ'},
+      { id:11, name: 'M'},
+      { id:12, name: 'CM'},
+      { id:13, name: 'INCH'},
+]

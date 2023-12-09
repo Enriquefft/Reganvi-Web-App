@@ -37,19 +37,20 @@ ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app', '.now.sh', 'https://test-2-ivjz87ix
 
 #---EDITADO
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    #instaled
-    'rest_framework',
-    'corsheaders',
-    'knox',
-    'phonenumber_field',
-    #apps
-    'main',
+      'django.contrib.admin',
+      'django.contrib.auth',
+      'django.contrib.contenttypes',
+      'django.contrib.sessions',
+      'django.contrib.messages',
+      'django.contrib.staticfiles',
+      #instaled
+      'rest_framework',
+      'rest_framework_simplejwt.token_blacklist',
+      'corsheaders',
+      'knox',
+      'phonenumber_field',
+      #apps
+      'main',
 ]
 
 #---EDITADO
@@ -151,7 +152,7 @@ REST_FRAMEWORK = {
 
 #REST KNOX CONFIG
 REST_KNOX = {
-    'USER_SERIALIZER': 'main.serializers.UserSerializer',
+    'USER_SERIALIZER': 'main.serializers.user_serializers.UserSerializer',
     'TOKEN_TTL': timedelta(days=30),
     'TOKEN_LIMIT_PER_USER': 5,
 }

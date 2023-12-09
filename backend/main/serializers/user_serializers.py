@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser
+from ..models import CustomUser
 from django.contrib.auth import authenticate
 from phonenumbers import is_valid_number
 from django.core.validators import EmailValidator

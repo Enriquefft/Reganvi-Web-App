@@ -3,11 +3,10 @@ from rest_framework.generics import CreateAPIView, UpdateAPIView, RetrieveAPIVie
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-from .models import CustomUser
-from .serializers import CreateUserSerializer, UpdateUserSerializer, LoginSerializer, RefreshUserSerializer, GetUserSerializer
+from ..models import CustomUser
+from ..serializers.user_serializers import CreateUserSerializer, UpdateUserSerializer, LoginSerializer, RefreshUserSerializer, GetUserSerializer
 from knox import views as knox_views
 from django.contrib.auth import login
-from rest_framework import serializers
 
 from knox.auth import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -23,15 +22,19 @@ class CreateUserAPI(CreateAPIView):
 
 
 class UpdateUserAPI(UpdateAPIView):
+      """
+      Updates user instance
+      """
       queryset = CustomUser.objects.all()
       authentication_classes = (TokenAuthentication,)
       permission_classes = (IsAuthenticated,)
       serializer_class = UpdateUserSerializer
 
-   
-
 
 class RefreshUserAPI(RetrieveAPIView):
+      """
+      Refreshes user instance
+      """
       queryset = CustomUser.objects.all()
       authentication_classes = (TokenAuthentication,)
       permission_classes = (IsAuthenticated,)
@@ -39,7 +42,8 @@ class RefreshUserAPI(RetrieveAPIView):
 
       def get_object(self):
             return self.request.user
-      
+
+
 class GetUserAPI(RetrieveAPIView):
       queryset = CustomUser.objects.all()
       authentication_classes = (TokenAuthentication,)
@@ -63,3 +67,6 @@ class LoginAPIView(knox_views.LoginView):
             response.delete_cookie('csrftoken')
             response.delete_cookie('sessionid')
             return response
+
+
+

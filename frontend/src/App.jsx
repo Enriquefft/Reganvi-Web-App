@@ -12,13 +12,16 @@ import UserScreen from './screens/UserScreen'
 
 function App() {
       const userInfoFromRedux = useSelector((state) => state.userInfo.userInfo)
+      const productOptionsFromRedux = useSelector((state) => state.productInfo.productOptions)
 
       const [userInfo, setUserInfo] = useState(userInfoFromRedux)
+      const [productOptions, setProductOptions] = useState(productOptionsFromRedux)
 
       
       useEffect(() => {
             setUserInfo(userInfoFromRedux)
-      }, [userInfoFromRedux]);
+            setProductOptions(productOptionsFromRedux)
+      }, [userInfoFromRedux, productOptionsFromRedux]);
 
       return (
             <>
@@ -28,7 +31,7 @@ function App() {
                         <Routes >
                               <Route path="/" Component={HomeScreen} /> 
                               <Route path="/about" Component={AboutScreen} /> 
-                              <Route path="/cotization" Component={CotizationScreen} /> 
+                              <Route path="/cotization" element={<CotizationScreen userInfo={userInfo} productOptions={productOptions}/>}/> 
                               <Route path="/user" element={<UserScreen userInfo={userInfo}/>}  /> 
                               
                         </Routes>
