@@ -24,7 +24,7 @@ function App() {
       }, [userInfoFromRedux, productOptionsFromRedux]);
 
       return (
-            <>
+            <div className='min-h-screen'>
                   
                   <BrowserRouter>
                         <Header userInfo={userInfo}/>
@@ -37,7 +37,7 @@ function App() {
                         </Routes>
                         <Footer/>
                   </BrowserRouter>
-            </>   
+            </div>   
       )
 }
 
