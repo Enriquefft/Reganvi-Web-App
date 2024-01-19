@@ -2,6 +2,7 @@ import { Container, Row, Col, Button, Card, Form, Dropdown } from 'react-bootstr
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getProductOptions, productCotization } from '../reducers/productReducers';
+import { mainBlue, mainGreen, mainPink, mainOrange, buttonStyle1, buttonOnHover1, buttonOffHover1, buttonStyle2, buttonOnHover2, buttonOffHover2 } from '../utils';
 
 
 import { cotizationTypes, unitsOfMeasure } from '../utils'
@@ -84,7 +85,7 @@ function CotizationScreen({ productOptions, userInfo}) {
                   <Row className="mb-2">
                         <Col>
                               <h3>Cotiza tu pedido</h3>
-                              <p>Usamos inteligencia artificial para evaluar el mercado y darte las mejores recomendaciones.</p>
+                              <p>Nuestra base de datos está actualizada con los productos más reelevantes en su zona, seleccione los filtros para que usted pueda encontrar el producto que busca.</p>
                         </Col>
                   </Row>
                   <Form onSubmit={handleCotization}>
@@ -267,7 +268,14 @@ function CotizationScreen({ productOptions, userInfo}) {
                                     <p>RUC: {product.product_instance.company.RUC}</p>
                               </Col>
                               <Col xs={6} className="text-right">
-                                    <h5>s/.{product.cotization_price}</h5>
+                                    <h5>s/.{Number(product.cotization_price).toFixed(2).replace('/\d(?=(\d{3})+\.)/g', '$&,') }</h5>
+                              </Col>
+                              <Col xs={12} >
+                                    <div className='p-1 w-48 text-center rounded-xl '
+                                    style={buttonStyle1} onMouseEnter={(e) => buttonOnHover1(e)} onMouseLeave={(e) => buttonOffHover1(e)}
+                                    >
+                                          Chatear con un asesor
+                                    </div>
                               </Col>
                         </Row>
                         ))}

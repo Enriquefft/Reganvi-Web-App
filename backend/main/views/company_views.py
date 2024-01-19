@@ -16,6 +16,8 @@ class CompanyInfoCreateView(CreateAPIView):
       def perform_create(self, serializer):
             serializer.save(user=self.request.user)
 
+            
+
 class CompanyInfoGetView(APIView):
       """
       Returns the CompanyInfo object associated with the given user

@@ -82,6 +82,9 @@ function UserEdit({ userInfo, handleShowEditForm }) {
       const handleCountryCodeChange = (selectedCode) => {
             setPhoneNumberCode(selectedCode);
       };
+      const handleGenderChange = (selectedGender) => {
+            setGender(selectedGender);
+      };
 
 
       return (
@@ -139,48 +142,93 @@ function UserEdit({ userInfo, handleShowEditForm }) {
                                                       </Form.Group>
 
                                                       <Form.Group controlId="gender" className='w-full'> 
-                                                            <Form.Label>Gender</Form.Label>
-                                                            <Form.Select
-                                                                  value={gender}
-                                                                  onChange={(e) => setGender(e.target.value)}
-                                                                  className='rounded mb-3 w-full py-2 px-3 bg-gray-50'
-                                                            >
-                                                                  <option value="">Select Gender</option>
-                                                                  <option value="male">male</option>
-                                                                  <option value="female">female</option>
-                                                                  <option value="other">other</option>
-                                                            </Form.Select>
-                                                      </Form.Group>
-
-                                                      <Form.Group controlId="phone_number" className='w-full'>
-                                                            
-                                                            <Form.Label>Phone Number</Form.Label>
-                                                            <Row className='items-center mb-3'>
-                                                                  <Col xs={3} className='items-center'> 
-                                                                        <Dropdown className='rounded' onSelect={handleCountryCodeChange}>
-                                                                              <Dropdown.Toggle className='rounded w-20' variant='light' id="country-code-dropdown">
-                                                                                    {phone_number_code}
+                                                                        <Form.Label>Género</Form.Label>
+                                                                        <Dropdown className='' onSelect={handleGenderChange} >
+                                                                              <Dropdown.Toggle  className='rounded w-full bg-white border border-gray d-flex justify-content-between align-items-center mb-3' variant='light' id="gender-dropdown">
+                                                                                    {(gender !== "") ? gender : (<div className="text-gray-500">Seleccione su género</div>)}
                                                                               </Dropdown.Toggle>
                                                                               <Dropdown.Menu
                                                                                     align="start"
-                                                                                    flip={false}
+                                                                                    onChange={(e) => handleGenderChange(e.target.value)}
+                                                                                    style={{
+                                                                                          maxHeight: '300px',
+                                                                                          overflowY: 'auto',
+                                                                                    }}
+                                                                                    popperConfig={{
+                                                                                          modifiers: [{
+                                                                                                      name: 'offset',
+                                                                                                      options: {offset: [0, -100]},
+                                                                                          }],
+                                                                                    }}
                                                                               >
-                                                                                    {countryCodes.map((country) => (
-                                                                                          <Dropdown.Item key={country.code} eventKey={country.code}>
-                                                                                          {country.code} - {country.name}
+                                                                                    <Dropdown.Header>Género</Dropdown.Header>
+                                                                                    {Object.keys(genderMapping).map((key) => (
+                                                                                          <Dropdown.Item key={key} eventKey={genderMapping[key]}>
+                                                                                                {genderMapping[key]}
                                                                                           </Dropdown.Item>
                                                                                     ))}
                                                                               </Dropdown.Menu>
-                                                                        </Dropdown>
+                                                                        </Dropdown>       
+                                                                  </Form.Group>
+
+                                                      <Form.Group controlId="phone_number" className='w-full'>
+                                                            
+                                                            <Form.Label>
+                                                                  Número de Teléfono
+                                                                  
+                                                            </Form.Label>
+                                                            <Row className='items-center mb-3'>
+                                                                  <Col xs={3} className='items-center pr-0 '> 
+                                                                  <Dropdown className='rounded' onSelect={handleCountryCodeChange}>
+                                                                        <Dropdown.Toggle
+                                                                              className=' w-full bg-white  d-flex justify-content-between align-items-center mx-0' 
+                                                                              variant='light' 
+                                                                              id="phone-number-code-dropdown"
+                                                                              style={{
+                                                                                    borderRadius: '8px 0 0 8px', // Adjust the border-radius as needed
+                                                                                    borderTop: '1px solid #dee2e6',
+                                                                                    borderLeft: '1px solid #dee2e6',
+                                                                                    borderBottom: '1px solid #dee2e6',
+                                                                                    borderRight: '0',
+                                                                                  }}
+                                                                      
+                                                                        >
+                                                                              {(phone_number_code !== "") ? phone_number_code : "-"}
+                                                                        </Dropdown.Toggle>
+                                                                        <Dropdown.Menu
+                                                                              align="start"
+                                                                              onChange={(e) => handleCountryCodeChange(e.target.value)}
+                                                                              style={{
+                                                                                    maxHeight: '300px', 
+                                                                                    overflowY: 'auto',
+                                                                              }}
+                                                                              popperConfig={{
+                                                                                    modifiers: [{
+                                                                                                name: 'offset',
+                                                                                                options: {offset: [0, -150]},
+                                                                                    }],
+                                                                              }}
+                                                                        >
+                                                                              <Dropdown.Header>Prefijo telefónico </Dropdown.Header>
+                                                                              {countryCodes.map((country) => (
+                                                                                    <Dropdown.Item key={country.code} eventKey={country.code}>
+                                                                                          {country.code}{"_".repeat(6 - country.code.length)}{country.name}
+                                                                                    </Dropdown.Item>
+                                                                              ))}
+                                                                        </Dropdown.Menu>
+                                                                  </Dropdown>  
                                                                   </Col>
-                                                                  <Col xs={9} >
+                                                                  <Col xs={9} className='pl-0' >
                                                                         <Form.Control
                                                                               type="phone_number"
-                                                                              placeholder="Enter phone number"
+                                                                              placeholder="Ingrese su número de teléfono"
                                                                               value={phone_number}
                                                                               onChange={(e) => setPhoneNumber(e.target.value)}
-                                                                              className='rounded mx-0'
-                                                                        />
+                                                                              style={{
+                                                                                    borderRadius: '0 8px 8px 0', // Adjust the border-radius as needed
+                                                                                  }}
+                                                                                  className='rounded-l-none mx-0 border'
+                                                                              />
                                                                   </Col>
                                                             </Row>
                                                       </Form.Group>

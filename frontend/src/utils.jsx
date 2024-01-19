@@ -1,5 +1,37 @@
 export const BASE_URL = 'http://127.0.0.1:8000'
 
+export const mainGreen = "#227f19"
+export const mainPink = "#76197f"
+export const mainBlue = "#19557f"
+export const mainOrange = "#7f4319"
+
+export const buttonStyle1 = {
+      backgroundColor: mainPink,
+      color:"white",
+      transition: 'opacity 0.3s ease',
+}
+export const buttonOnHover1 = (e) => {
+      e.target.style.opacity = 0.7
+      e.target.style.backgroundColor = mainGreen
+}
+export const buttonOffHover1 = (e) => {
+      e.target.style.opacity = 1
+      e.target.style.backgroundColor = mainPink
+}
+
+export const buttonStyle2 = {
+      backgroundColor: mainOrange,
+      transition: 'opacity 0.3s ease',
+}
+export const buttonOnHover2 = (e) => {
+      e.target.style.opacity = 0.7
+      e.target.style.backgroundColor = mainGreen
+}
+export const buttonOffHover2 = (e) => {
+      e.target.style.opacity = 1
+      e.target.style.backgroundColor = mainOrange
+}
+
 export const countryCodes = [
       { code: '+1', name: 'United States' },
       { code: '+51', name: 'Peru' },

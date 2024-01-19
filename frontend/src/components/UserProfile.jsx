@@ -80,25 +80,17 @@ function UserProfile( {userInfo, handleShowEditForm} ) {
                                                       </Form.Group>
 
                                                       <Form.Group controlId="phone_number" className='w-full'>
-                                                            
-                                                            <Form.Label>Phone Number</Form.Label>
-                                                            <Row className='items-center mb-3'>
-                                                                  <Col xs={3} className='items-center'> 
-                                                                        <Dropdown className='rounded text-center bg-gray-200 py-2' disabled>
-                                                                                    {phone_number_code}
-                                                                            
-                                                                        </Dropdown>
-                                                                  </Col>
-                                                                  <Col xs={9} >
-                                                                        <Form.Control
-                                                                              type="phone_number"
-                                                                              value={phone_number}
-                                                                              className='rounded mx-0'
-                                                                              readOnly
-                                                                        />
-                                                                  </Col>
-                                                            </Row>
-                                                      </Form.Group>
+                                                                  
+                                                                  <Form.Label>Número de Teléfono</Form.Label>
+                                                                  <Row className='items-center mb-3'>
+                                                                        <Col xs={3} className='pr-0'> 
+                                                                              <Form.Control type="phone_number" value={userInfo.loading == true ? (""):(phone_number_code)} className='mx-0' readOnly style={{borderRadius: '8px 0 0 8px', borderTop: '1px solid #ced4da', borderLeft: '1px solid #ced4da', borderBottom: '1px solid #ced4da', borderRight: '0' }}/>
+                                                                        </Col>
+                                                                        <Col xs={9} className='pl-0'>
+                                                                              <Form.Control type="phone_number" value={userInfo.loading == true ? (""):(phone_number)} className='mx-0' readOnly style={{borderRadius: '0 8px 8px 0'}}/>
+                                                                        </Col> 
+                                                                  </Row>
+                                                            </Form.Group>
 
                                                       <Form.Group controlId="email" className='w-full'>
                                                             <Form.Label>Email Address</Form.Label>

@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, Card } from 'react-bootstrap'
 import { BASE_URL } from '../utils'
 import { useNavigate } from 'react-router-dom'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { mainBlue, mainGreen, mainPink, mainOrange, buttonStyle1, buttonOnHover1, buttonOffHover1,  buttonStyle2, buttonOnHover2, buttonOffHover2 } from '../utils';
 
 
 function HomeScreen() {
@@ -73,16 +74,18 @@ function HomeScreen() {
             <> 
             <div className="w-full" style={firstBanner}>
                   {/* First Banner */}
-                  <div className='flex bg-gray-800 bg-opacity-50'>
-                        <Container className='py-40 text-white' >                  
-                              <h1 style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }} className="mt-3 p-3">Encuentra los mejores proveedores locales de materiales reciclados</h1>
-                              <p style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }} className='px-3'>Cotiza tu plan con nosotros y recibe asistencia de Inteligencia Artificial</p>
+                  <div className='flex bg-gray-800 bg-opacity-50' >
+                        <Container className='my-40 text-white p-4' style={{ backgroundColor:"rgba(0,0,0,0.7", boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)', }}>                  
+                              <h1 className="">Encuentra los mejores proveedores locales de materiales reciclados</h1>
+                              <p className='opacity-80'>Conectamos a proveedoresde materiales reciclados con corporaciones de industrias reutilizadoras</p>
                               <OverlayTrigger
                                     key="bottom"
                                     placement="bottom"
                                     overlay={<Tooltip id="tooltip-bottom">Ingresa los productos y cantidades que deseas para poder asesorarte.</Tooltip>}
                               >
-                                    <button onClick={handleButtonClick} className="text-black w-48 m-3 p-3 bg-green-600 rounded-xl hover:bg-gray-400" style={{backgroundColor:"#C5DE82"}}>
+                                    <button onClick={handleButtonClick} className="text-black w-48 my-2 p-2  rounded-xl" 
+                                    style={buttonStyle1} onMouseEnter={(e) => buttonOnHover1(e)} onMouseLeave={(e) => buttonOffHover1(e)}
+                                    >
                                           Cotiza tu pedido
                                     </button>
                               </OverlayTrigger>
@@ -90,12 +93,13 @@ function HomeScreen() {
           
                   </div>
             </div>
-            <Container className="my-20">
+            <Container className="my-20 p-2" style={{ boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)', borderRadius: '10px', }}>
                   {/* Company Logos */}
+                  
                   <Row className="mb-4 align-center justify-center">
                         {
                               companyLogos.map((company, index) => (
-                                    <Col xs={4} sm={2} className='p-4'>
+                                    <Col key={index} xs={4} sm={2} className='p-4'>
                                           <img src={company.image}/>
                                     </Col>
                               ))
@@ -103,34 +107,26 @@ function HomeScreen() {
                   </Row>
             </Container>
 
-            <Container className="my-5">
+            <Container className="my-5" >
                   {/* Recyclable Products */}
                   <Row className="mb-4">
                         <Col>
                               <h2>Productos Principales</h2>
                         </Col>
                   </Row>
-                  <Row className=''>
+                  <Row className='border rounded-xl p-3' >
                         {
                               mainProducts.map((product, index) => (
                                     
-                                    <Col md={6} className='my-4'>
-                                          <Card>
+                                    <Col key={index} md={6} className='my-4'>
+                                          <Card style={{ boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)', borderRadius: '10px', }}>
                                                 <Card.Img variant="top" src={product.image} />
                                                 <Card.Body>
                                                       <Card.Title>{product.title}</Card.Title>
                                                       <Card.Text>
                                                             {product.description}
                                                       </Card.Text>
-                                                      <OverlayTrigger
-                                                            key="bottom"
-                                                            placement="bottom"
-                                                            overlay={<Tooltip id="tooltip-bottom">Ingresa los productos y cantidades que deseas para poder asesorarte.</Tooltip>}
-                                                      >
-                                                            <button onClick={handleButtonClick} className="text-white w-48 mx-3 p-3 bg-green-600 rounded-xl hover:bg-gray-400" style={{backgroundColor:"#442B48"}}>
-                                                                  Cotiza tu plan
-                                                            </button>
-                                                      </OverlayTrigger>
+                                                     
                                                 </Card.Body>
                                           </Card>             
                                     </Col>
@@ -142,13 +138,16 @@ function HomeScreen() {
 
             <div className='w-full' style={secondBanner}>
                   <div className='flex bg-gray-800 bg-opacity-50'>
-                        <Container className="py-40">
+                        <Container className="my-40 p-4" style={{ backgroundColor:"rgba(0,0,0,0.7", boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)', }}>
                               {/* Banner */}
                   
-                              <h1 style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }} className='mb-8 text-white'>Tu eliges la locación. Nosotros nos encargamos del resto.</h1>
+                              <h2 className='mb-8 text-white'>Tu eliges el lugar, nosotros nos encargamos del resto.</h2>
                               <Row className='my-2'>
                                     <Col md={4}>
-                                          <Card className='w-full border-0 text-white' style={{backgroundColor:"#442B48"}}>
+                                          <Card className='w-full text-white my-1' 
+                                          style={buttonStyle1} 
+                                          onClick={() => {window.open('https://wa.me/51994898110/')}}
+                                          >
                                                 <Card.Body>
                                                       <Card.Title>Contactanos:</Card.Title>
                                                       <Card.Text>
@@ -160,7 +159,10 @@ function HomeScreen() {
                               </Row>
                               <Row className='my-2'>
                                     <Col md={4}>
-                                          <Card className='w-full border-0' style={{backgroundColor:"#C5DE82"}}>
+                                          <Card className='w-full text-white ' 
+                                          style={buttonStyle2} 
+                                          onClick={() => {window.open('mailto:reganvi.pe@gmail.com')}}
+                                          >
                                                 <Card.Body>
                                                       <Card.Title>Correo electrónico:</Card.Title>
                                                       <Card.Text>
