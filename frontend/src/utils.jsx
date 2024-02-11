@@ -1,4 +1,5 @@
-export const BASE_URL = 'http://127.0.0.1:8000'
+export const IP = '127.0.0.1'
+export const BASE_URL = `http://${IP}:8000`
 
 export const mainGreen = "#227f19"
 export const mainPink = "#76197f"
@@ -30,6 +31,27 @@ export const buttonOnHover2 = (e) => {
 export const buttonOffHover2 = (e) => {
       e.target.style.opacity = 1
       e.target.style.backgroundColor = mainOrange
+}
+
+
+export const buttonStyle3 = {
+      backgroundColor: mainGreen,
+      transition: 'opacity 0.3s ease',
+}
+export const buttonOnHover3 = (e) => {
+      e.target.style.opacity = 0.7
+      e.target.style.backgroundColor = mainPink
+}
+export const buttonOffHover3 = (e) => {
+      e.target.style.opacity = 1
+      e.target.style.backgroundColor = mainGreen
+}
+
+
+export const genderMapping = {
+      1: 'masculino',
+      2: 'femenino',
+      3: 'otro',
 }
 
 export const countryCodes = [
@@ -75,10 +97,10 @@ export const countryCodes = [
 ]
 
 export const cotizationTypes = [
-      { id:1, name: 'bulk'},
-      { id:2, name: 'pressed'},
-      { id:3, name: 'ground'},
-      { id:4, name: 'raw'},
+      { id:1, name: 'granel'},
+      { id:2, name: 'prensado'},
+      { id:3, name: 'molido'},
+      { id:4, name: 'paletizado'},
 ]
 
 export const unitsOfMeasure = [

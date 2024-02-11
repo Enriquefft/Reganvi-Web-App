@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 class CompanySerializer(serializers.ModelSerializer):
       class Meta:
             model = Company
-            fields = ['id', 'RUC', 'company_name']
+            fields = ['id', 'RUC', 'company_name', 'profile_image', 'mision', 'vision', 'values', 'district', 'city', 'country', 'rating', 'sales_count']
 
 class CompanyInfoSerializer(serializers.ModelSerializer):
       company = CompanySerializer(required=False)

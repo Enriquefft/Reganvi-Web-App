@@ -1,51 +1,62 @@
 from rest_framework import serializers
-from ..models import ProductCategory, Product, ProductInstance, Company, ProductIndustry
+from ..models import ProductCategory, Product, ProductInstance, Company #ProductIndustry
 from ..serializers.company_serializers import CompanySerializer
 
-class ProductCategorySerializer(serializers.ModelSerializer):
+class SmallProductCategorySerializer(serializers.ModelSerializer):
       class Meta:
             model = ProductCategory
             fields = ['id', 'name']
 
+class ProductCategorySerializer(serializers.ModelSerializer):
+      related_categories = serializers.SerializerMethodField()
+      class Meta:
+            model = ProductCategory
+            fields = ['id', 'name', 'image', 'related_categories']
+      def get_related_categories(self, obj):
+            related_categories = obj.related_categories.all()
+            return SmallProductCategorySerializer(related_categories, many=True).data
+
+
+class SmallProductSerializer(serializers.ModelSerializer):
+      class Meta:
+            model = Product
+            fields = ['id', 'name']
+
 class ProductSerializer(serializers.ModelSerializer):
       category = ProductCategorySerializer()
+      related_products = serializers.SerializerMethodField()
 
       class Meta:
             model = Product
-            fields = ['id', 'name', 'category']
+            fields = ['id', 'name', 'category', 'description', 'image', 'related_products']
+      
+      def get_related_products(self, obj):
+            related_products = obj.related_products.all()
+            return SmallProductSerializer(related_products, many=True).data
 
-class ProductIndustrySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductIndustry
-        fields = ['id', 'name']
 
 
 class ProductInstanceSerializer(serializers.ModelSerializer):
       product_name = serializers.CharField(write_only=True)
       company_ruc = serializers.CharField(write_only=True)
-      industry_name = serializers.CharField(write_only=True)
 
       product = ProductSerializer(read_only=True)
       company = CompanySerializer(read_only=True)
-      industry = ProductIndustrySerializer(read_only=True)
 
       class Meta:
             model = ProductInstance
-            fields = ['id', 'name', 'bulk_price', 'pressed_price', 'ground_price', 'raw_material_price',
-                        'unit_of_measure', 'product_name', 'company_ruc', 'industry_name', 'product', 'company', 'industry']
+            fields = ['id', 'name', 'image', 'bulk_price', 'pressed_price', 'ground_price', 'raw_material_price',
+                        'unit_of_measure', 'product_name', 'company_ruc', 'product', 'company', 'available_quantity']
 
       def create(self, validated_data):
             product_name = validated_data.pop('product_name')
             company_ruc = validated_data.pop('company_ruc')
-            industry_name = validated_data.pop('industry_name')
 
             product, _ = Product.objects.get_or_create(name=product_name)
             company, _ = Company.objects.get_or_create(RUC=company_ruc)
-            industry, _ = ProductIndustry.objects.get_or_create(name=industry_name)
 
             validated_data['product'] = product
             validated_data['company'] = company
-            validated_data['industry'] = industry
 
             return ProductInstance.objects.create(**validated_data)
       

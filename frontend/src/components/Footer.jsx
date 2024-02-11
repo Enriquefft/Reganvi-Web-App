@@ -17,7 +17,7 @@ function Footer() {
       }
 
       return (
-            <div className='bg-black text-white mt-auto self-end align-bottom justify-self-end'>
+            <div className='bg-black bg-opacity-90 text-white mt-auto self-end align-bottom justify-self-end'>
                   <Container className='py-10'>
                         <Row>
                               <Col sm={4} className='py-3'>

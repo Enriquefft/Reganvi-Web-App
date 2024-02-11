@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { BASE_URL } from '../utils'
 
 // Define an initial state that includes productOptions from localStorage if available
-const productOptionsFromStorage = localStorage.getItem("productOptions") ? JSON.parse(localStorage.getItem("productOptions")) : {product_names:null,industries:null}
+const productOptionsFromStorage = localStorage.getItem("productOptions") ? JSON.parse(localStorage.getItem("productOptions")) : {product_names:null}
 const productCotizationResultsFromStorage = localStorage.getItem("productCotizationResults") ? JSON.parse(localStorage.getItem("productCotizationResults")) : {productItems:null}
 
 const initialState = {
@@ -12,14 +12,14 @@ const initialState = {
       productCotizationResultsError: null,
 }
 
-export const getProductOptions = createAsyncThunk("productInfo/productOptions", async ({ token }) => {
+export const getProductOptions = createAsyncThunk("productInfo/productOptions", async () => {
       try {
-            const response = await fetch(`${BASE_URL}/api/product/get-options/`, {method: "GET", headers: {Authorization: `Token ${token}`}})
+            const response = await fetch(`${BASE_URL}/api/product/get-options/`, {method: "GET"})
 
             if (!response.ok) {throw new Error("Product options request failed")}
 
             const refreshed = await response.json()
-            const data = {product_names:refreshed.product_names, industries:refreshed.industries}
+            const data = refreshed
             return data
       } catch (error) {
             // Handle any errors here
@@ -27,17 +27,16 @@ export const getProductOptions = createAsyncThunk("productInfo/productOptions", 
       }
 });
 
-export const productCotization = createAsyncThunk("productInfo/cotization", async ({ token, product_name, type, amount, unit_of_measure, industry }) => {
+export const productCotization = createAsyncThunk("productInfo/cotization", async ({ token, product_name, type, amount, unit_of_measure }) => {
       try {
             const formData = new FormData();
             formData.append("product_name", product_name);
             formData.append("type", type);  
             formData.append("amount", amount);
             formData.append("unit_of_measure", unit_of_measure);
-            formData.append("industry", industry);
 
             const response = await fetch(`${BASE_URL}/api/product-instance/cotization/`, {
-                  method: "POST", 
+                  method: "POST",  
                   headers: {Authorization: `Token ${token}`},
                   body: formData,
             })
@@ -75,7 +74,7 @@ export const productInfoSlice = createSlice({
                   localStorage.removeItem("productOptions");
                   return {
                         ...state,
-                        productOptions: {product_names:null,industries:null},
+                        productOptions: null,
                         productOptionsError: action.error.message,
                   }
             })

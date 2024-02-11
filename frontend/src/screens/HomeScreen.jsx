@@ -1,12 +1,14 @@
 import React from 'react'
-import { Container, Row, Col, Button, Card } from 'react-bootstrap'
+import { useState, useEffect, useRef } from 'react';
+
+import { Container, Row, Col, Button, Card, Modal } from 'react-bootstrap'
 import { BASE_URL } from '../utils'
 import { useNavigate } from 'react-router-dom'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { mainBlue, mainGreen, mainPink, mainOrange, buttonStyle1, buttonOnHover1, buttonOffHover1,  buttonStyle2, buttonOnHover2, buttonOffHover2 } from '../utils';
 
 
-function HomeScreen() {
+function HomeScreen({ productOptions }) {
       const navigate = useNavigate();
 
       const handleButtonClick = () => {
@@ -14,21 +16,7 @@ function HomeScreen() {
       };
 
 
-      const firstBanner = {
-            backgroundImage: `url(${BASE_URL + '/images/RecyclingFirstBanner1.png'})`, 
-            backgroundSize: 'cover', 
-            backgroundRepeat: 'no-repeat', 
-            backgroundPosition: 'center', 
-            backgroundColor: '#f0f0f0', 
-      }; //style={firstBanner}
-
-      const secondBanner = {
-            backgroundImage: `url(${BASE_URL + '/images/RecyclingFirstBanner.png'})`, 
-            backgroundSize: 'cover', 
-            backgroundRepeat: 'no-repeat', 
-            backgroundPosition: 'center', 
-            backgroundColor: '#f0f0f0', 
-      }; //style={secondBanner}
+      
       
       const companyLogos = [
             {
@@ -70,109 +58,225 @@ function HomeScreen() {
             },
       ]
 
-      return (
+      const [controlWidth, setControlWidth] = useState(0)
+      const handleResize = () => {
+            const windowsWidth = window.innerWidth
+            let newWidth = 0
+            if(windowsWidth < 990){
+                  newWidth = Math.round(windowsWidth * 0.9)
+            } else if(windowsWidth < 2000){
+                  newWidth = 1000
+            } else {
+                  newWidth = 1500
+            }
+            setControlWidth(newWidth)
+      }
+
+      const [productPage, setProductPage] = useState(0)
+      const [productFirst, setProductFirst] = useState(0)
+      const [productLast, setProductLast] = useState(4)
+
+      const handleProductPage = (value) => {
+            const num_pages = Math.ceil(productOptions?.length / 4)
+            const new_page = productPage + value
+            setProductPage(new_page < num_pages && new_page >= 0 ? new_page : productPage)
+            setProductFirst(new_page < num_pages && new_page >= 0 ? new_page * 4 : productFirst)
+            setProductLast(new_page < num_pages && new_page >= 0 ? new_page * 4 + 4 : productLast)
+      }
+
+      useEffect(() => {
+            handleResize()
+            window.addEventListener('resize', handleResize)
+      
+            return () => {
+                  window.removeEventListener('resize', handleResize)
+            }
+      }, [])
+
+      const [isOnScreenFirstBanner, setIsOnScreenFirstBanner] = useState(false);
+      const [isOnScreenSecondBanner, setIsOnScreenSecondBanner] = useState(false);
+      const [isOnScreenThirdBanner, setIsOnScreenThirdBanner] = useState(false);
+      const [isOnScreenForthBanner, setIsOnScreenForthBanner] = useState(false);
+
+      useEffect(() => {
+            const desfase = 500
+            const handleScroll = () => {
+              const firstBannerBottom = document.getElementById('first_banner')?.getBoundingClientRect().bottom
+              const isFirstBannerVisible = firstBannerBottom - desfase < window.innerHeight 
+        
+              const secondBannerBottom = document.getElementById('second_banner')?.getBoundingClientRect().bottom
+              const isSecondBannerVisible = secondBannerBottom - desfase < window.innerHeight
+
+              const thirdBannerBottom = document.getElementById('third_banner')?.getBoundingClientRect().bottom
+              const isThirdBannerVisible = thirdBannerBottom - desfase < window.innerHeight
+
+              const forthBannerBottom = document.getElementById('forth_banner')?.getBoundingClientRect().bottom
+              const isForthBannerVisible = forthBannerBottom - desfase < window.innerHeight
+        
+              setIsOnScreenFirstBanner(isFirstBannerVisible)
+              setIsOnScreenSecondBanner(isSecondBannerVisible)
+              setIsOnScreenThirdBanner(isThirdBannerVisible)
+              setIsOnScreenForthBanner(isForthBannerVisible)
+            };
+        
+            window.addEventListener('scroll', handleScroll);
+        
+            handleScroll();
+        
+            return () => {
+              window.removeEventListener('scroll', handleScroll);
+            };
+          }, []);
+
+      const firstBanner = {
+            backgroundImage: `url(${BASE_URL + '/images/RecyclingFirstBanner1.png'})`, 
+            backgroundSize: 'cover', 
+            backgroundRepeat: 'no-repeat', 
+            backgroundPosition: 'center', 
+            backgroundColor: '#f0f0f0', 
+      }; //style={firstBanner}
+
+      const secondBanner = {
+            backgroundImage: `url(${BASE_URL + '/images/plantbanner.png'})`, 
+            backgroundSize: 'cover', 
+            backgroundRepeat: 'no-repeat', 
+            backgroundPosition: 'center', 
+            backgroundColor: '#f0f0f0', 
+      }; //style={firstBanner}
+
+      const lastBanner = {
+            backgroundImage: `url(${BASE_URL + '/images/RecyclingFirstBanner.png'})`, 
+            backgroundSize: 'cover', 
+            backgroundRepeat: 'no-repeat', 
+            backgroundPosition: 'center', 
+            backgroundColor: '#f0f0f0', 
+      }; //style={lastBanner}
+
+      const [showProductModal, setShowProductModal] = useState(false)
+      const [displayedProduct, setDisplayedProduct] = useState({})
+
+      const handleProductModal = (product) => {
+            setDisplayedProduct(product)
+            setShowProductModal(!showProductModal)
+      }
+     
+      return ( 
             <> 
-            <div className="w-full" style={firstBanner}>
+            <Modal className='text-xs' show={showProductModal} onHide={() => handleProductModal({})} centered size="lg">
+                        <Modal.Header closeButton>
+                              <Modal.Title>{displayedProduct.name}</Modal.Title>
+                              <span className='ml-auto mt-1 w-6 h-6 select-none' onClick={() => handleProductModal({})}>
+                                    <img src="/cross_thin_icon.png"/></span>
+                        </Modal.Header>
+                        <Modal.Body>
+                              <img className="mb-2 object-cover w-full h-40 rounded border" src={`${BASE_URL}${displayedProduct.image}`} />
+                              <h6>Descripción</h6>
+                              <p className='text-justify'>{displayedProduct.description}</p>
+                              <div className='w-full flex justify-content-center'>
+                              <button onClick={handleButtonClick} className="text-black w-48 my-2 p-2 rounded-xl" style={buttonStyle1} onMouseEnter={(e) => buttonOnHover1(e)} onMouseLeave={(e) => buttonOffHover1(e)}>
+                                    Cotiza Gratis
+                              </button>
+                              </div>
+                                  
+                        </Modal.Body>
+                       
+            </Modal>
+            <div style={{}} id='first_banner' className='w-full bg-gray-100'>
+                  <div className='flex flex-col p-5 lg:p-0 lg:flex-row items-center ' style={{ height:window.innerWidth >= 800 ? '800px' : '640px'  }}>
+                        <Container className={`fade-in transform ${isOnScreenFirstBanner ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-40'} transition-transform-opacity duration-1000 ease-in-out`}>
+                              <Row>
+                                    <Col xs={12} lg={4}>
+                                          <h1 className='drop-shadow-xl'>Recicla, gana y vive</h1>
+                                          <p className='drop-shadow-xl'>Encuentra los mejores proveedores de materiales reciclados en el Perú</p>
+                                          <OverlayTrigger key="bottom" placement="bottom" overlay={<Tooltip id="tooltip-bottom">Ingresa los productos y cantidades que deseas para poder asesorarte.</Tooltip>}>
+                                                <button onClick={handleButtonClick} className="text-black w-48 my-2 p-2  rounded-xl" style={buttonStyle1} onMouseEnter={(e) => buttonOnHover1(e)} onMouseLeave={(e) => buttonOffHover1(e)}>
+                                                      Cotiza Gratis
+                                                </button>
+                                          </OverlayTrigger>
+                                    </Col>
+                              </Row>
+                        </Container>
+                        <div className='flex lg:flex-col justify-center py-5'>
+                              <img className={`absolute right-0 drop-shadow-2xl  ${window.innerWidth >= 990 ? 'w-3/5' : 'w-full' } fade-in transform ${isOnScreenFirstBanner ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-40'} transition-transform-opacity duration-1000  ease-in-out`} src={BASE_URL + '/images/hand.png'} alt='Hand image' />
+                              <img className={`absolute  right-0 drop-shadow-2xl  ${window.innerWidth >= 990 ? 'w-3/5' : 'w-full' }  ${isOnScreenFirstBanner ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 delay-500 ease-in-out`} src={BASE_URL + '/images/globe.png'} alt='Globe image' />
+                        </div>
+                  </div>
+
+            </div>
+            <div style={firstBanner} id='second_banner' className='w-full '>
                   {/* First Banner */}
-                  <div className='flex bg-gray-800 bg-opacity-50' >
-                        <Container className='my-40 text-white p-4' style={{ backgroundColor:"rgba(0,0,0,0.7", boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)', }}>                  
-                              <h1 className="">Encuentra los mejores proveedores locales de materiales reciclados</h1>
-                              <p className='opacity-80'>Conectamos a proveedoresde materiales reciclados con corporaciones de industrias reutilizadoras</p>
-                              <OverlayTrigger
-                                    key="bottom"
-                                    placement="bottom"
-                                    overlay={<Tooltip id="tooltip-bottom">Ingresa los productos y cantidades que deseas para poder asesorarte.</Tooltip>}
-                              >
-                                    <button onClick={handleButtonClick} className="text-black w-48 my-2 p-2  rounded-xl" 
-                                    style={buttonStyle1} onMouseEnter={(e) => buttonOnHover1(e)} onMouseLeave={(e) => buttonOffHover1(e)}
-                                    >
-                                          Cotiza tu pedido
-                                    </button>
-                              </OverlayTrigger>
+                  <div className={`flex  align-items-center bg-gray-900  ${isOnScreenSecondBanner ? 'bg-opacity-80' : 'bg-opacity-100'} transition duration-1000 ease-in-out`} /* 900 80 */
+                  style={{ height:window.innerWidth >= 800 ? '800px' : '600px'  }} >
+                        <Container className={`text-white p-4 h-fit fade-in transform ${isOnScreenSecondBanner ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-40'} transition-transform-opacity duration-1000 ease-in-out `} >                  
+                              
+                              <h1 className='drop-shadow-xl'>Algunos de nuestros aliados</h1>
+                              <Row className="align-center justify-center">
+                                    {
+                                          companyLogos.map((company, index) => (
+                                                <Col key={index} xs={6} sm={3} className='p-4 flex align-items-center'>
+                                                      <img className='w-full p-auto' src={company.image}/>
+                                                </Col>
+                                          ))
+                                    }
+                              </Row>
+
                         </Container>
           
                   </div>
             </div>
-            <Container className="my-20 p-2" style={{ boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)', borderRadius: '10px', }}>
-                  {/* Company Logos */}
-                  
-                  <Row className="mb-4 align-center justify-center">
-                        {
-                              companyLogos.map((company, index) => (
-                                    <Col key={index} xs={4} sm={2} className='p-4'>
-                                          <img src={company.image}/>
-                                    </Col>
-                              ))
-                        }
-                  </Row>
-            </Container>
+            
 
-            <Container className="my-5" >
+            <div id='third_banner' className="flex bg-gray-100 py-max align-items-center" style={{ height:window.innerWidth >= 800 ? '700px' : '1000px'  }}  >
                   {/* Recyclable Products */}
-                  <Row className="mb-4">
-                        <Col>
-                              <h2>Productos Principales</h2>
-                        </Col>
-                  </Row>
-                  <Row className='border rounded-xl p-3' >
-                        {
-                              mainProducts.map((product, index) => (
-                                    
-                                    <Col key={index} md={6} className='my-4'>
-                                          <Card style={{ boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)', borderRadius: '10px', }}>
-                                                <Card.Img variant="top" src={product.image} />
-                                                <Card.Body>
-                                                      <Card.Title>{product.title}</Card.Title>
-                                                      <Card.Text>
-                                                            {product.description}
-                                                      </Card.Text>
-                                                     
-                                                </Card.Body>
-                                          </Card>             
-                                    </Col>
-                                    
-                              ))
-                        }
-                  </Row>
-            </Container>
+                  <Container className={`p-4 h-fit fade-in transform ${isOnScreenThirdBanner ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-40'} transition-transform-opacity duration-1000 ease-in-out `}>
+                        <Row className="mb-5">
+                              <Col><h1>Algunos de nuestros productos</h1></Col>
+                        </Row>
+                        <Row className='align-items-center my-4' >
+                              {
+                                    productOptions?.length > 0 ? [...productOptions].slice(productFirst, productLast).map((product, index) => (
+                                          
+                                          <Col key={index} xs={6} md={3} className='py-2'>
+                                                <Card style={{borderRadius:'40px'}} onClick={() => handleProductModal(product)} className='shadow-none hover:shadow-lg scale-100 hover:scale-105' >
+                                                      <Card.Img style={{borderRadius:'40px 40px 0 0'}} variant="top" src={`${BASE_URL}${product.image}`} />
+                                                      <Card.Body className=''>
+                                                            <Card.Title className='h-12'>{product.name}</Card.Title>                                                      
+                                                      </Card.Body>
+                                                </Card>             
+                                          </Col>
+                                          
+                                    )) : null
+                              }
+                        </Row>
+                        <Row >
+                              <Col xs={12} className='flex align-items-center justify-content-center py-2'>
+                                    <div className={`w-8 ${productPage == 0 && 'opacity-25'} drop-shadow-none hover:drop-shadow-lg scale-100 hover:scale-110`} onClick={() => handleProductPage(-1)}><img src="/left_icon.png"/></div>
+                                    <div>pagina {productPage + 1} of {Math.ceil(productOptions?.length / 4)}</div>
+                                    <div className={`w-8 ${productPage == (Math.ceil(productOptions?.length / 4) - 1) && 'opacity-25'} drop-shadow-none hover:drop-shadow-lg scale-100 hover:scale-110`} onClick={() => handleProductPage(1)}><img src="/right_icon.png"/></div>
+                              </Col>
+                        </Row>
+                  </Container>
+            </div>
 
-            <div className='w-full' style={secondBanner}>
-                  <div className='flex bg-gray-800 bg-opacity-50'>
-                        <Container className="my-40 p-4" style={{ backgroundColor:"rgba(0,0,0,0.7", boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.1)', }}>
+            <div id='forth_banner' className='w-full ' style={lastBanner}>
+                  <div className={`flex  align-items-center bg-gray-900  ${isOnScreenForthBanner ? 'bg-opacity-80' : 'bg-opacity-100'} transition duration-1000 ease-in-out`} /* 900 80 */
+                  style={{ height:window.innerWidth >= 800 ? '800px' : '600px'  }}>
+                        <Container className={`p-4 h-fit fade-in transform ${isOnScreenForthBanner ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-40'} transition-transform-opacity duration-1000 ease-in-out `}  >
                               {/* Banner */}
                   
-                              <h2 className='mb-8 text-white'>Tu eliges el lugar, nosotros nos encargamos del resto.</h2>
-                              <Row className='my-2'>
-                                    <Col md={4}>
-                                          <Card className='w-full text-white my-1' 
-                                          style={buttonStyle1} 
-                                          onClick={() => {window.open('https://wa.me/51994898110/')}}
-                                          >
-                                                <Card.Body>
-                                                      <Card.Title>Contactanos:</Card.Title>
-                                                      <Card.Text>
-                                                            +51 994 898 110
-                                                      </Card.Text>
-                                                </Card.Body>
-                                          </Card>     
+                              <h1 className='mb-8 text-white text-center'>Contactanos para obtener las mejores ofertas locales</h1>
+                              <Row className='my-2 justify-content-center'>
+                                    <Col md={3} className='text-white flex flex-col align-items-center justify-center p-2 m-2  rounded-2xl' style={buttonStyle1} onMouseEnter={(e) => buttonOnHover1(e)} onMouseLeave={(e) => buttonOffHover1(e)}  onClick={() => {window.open('https://wa.me/51994898110/')}}>
+                                          +51 994 898 110
+                                         
                                     </Col>
+                                    <Col md={3} className='text-white flex flex-col align-items-center justify-center p-2 m-2 rounded-2xl' style={buttonStyle2} onMouseEnter={(e) => buttonOnHover2(e)} onMouseLeave={(e) => buttonOffHover2(e)}  onClick={() => {window.open('mailto:reganvi.pe@gmail.com')}}>
+                                          reganvi.pe@gmail.com
+                                         
+                                    </Col>
+                                    
                               </Row>
-                              <Row className='my-2'>
-                                    <Col md={4}>
-                                          <Card className='w-full text-white ' 
-                                          style={buttonStyle2} 
-                                          onClick={() => {window.open('mailto:reganvi.pe@gmail.com')}}
-                                          >
-                                                <Card.Body>
-                                                      <Card.Title>Correo electrónico:</Card.Title>
-                                                      <Card.Text>
-                                                            reganvi.pe@gmail.com
-                                                      </Card.Text>
-                                                </Card.Body>
-                                          </Card>   
-                                    </Col>
-                              </Row>  
-                        
+                             
                         </Container>
                   </div>
             </div>

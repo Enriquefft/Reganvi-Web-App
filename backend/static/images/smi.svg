@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="127"
+   height="57"
+   viewBox="0 0 127 57"
+   fill="none"
+   version="1.1"
+   id="svg81"
+   sodipodi:docname="smi.svg"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview83"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="3.4971098"
+     inkscape:cx="173"
+     inkscape:cy="28.595042"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-32000"
+     inkscape:window-y="-32000"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg81" />
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.75748;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     id="rect1729"
+     width="120.95702"
+     height="98.080994"
+     x="96.651237"
+     y="-17.728926"
+     clip-path="url(#clipPath2688)"
+     inkscape:export-filename="C:\Users\charl\OneDrive\Escritorio\Charlie\Workademy\App\Reganvi\backend\static\images\logo1sanmiguelindustrias.png"
+     inkscape:export-xdpi="306.2608"
+     inkscape:export-ydpi="306.2608"
+     transform="translate(-93.219835,-0.85785124)" />
+  <defs
+     id="defs79">
+    <clipPath
+       id="clip0_3451_152">
+      <rect
+         width="346"
+         height="56.4496"
+         fill="#ffffff"
+         id="rect76"
+         x="0"
+         y="0" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath2688">
+      <g
+         clip-path="url(#clip0_3451_152)"
+         id="g2696"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1">
+        <path
+           d="M 174.623,40.4789 161.917,10.019 h -12.855 v 36.4098 h 8.335 l -0.279,-28.8254 12.015,28.8254 h 10.62 l 12.014,-28.7337 -0.28,28.7337 h 8.336 V 10.019 h -12.448 z"
+           fill="#7BFFA6"
+           id="path2690"
+           style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1" />
+        <path
+           d="m 213.239,10.019 h -8.534 v 36.4098 h 8.534 z"
+           fill="#7BFFA6"
+           id="path2692"
+           style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1" />
+        <path
+           d="m 140.062,27.1711 c -2.926,-1.6363 -7.626,-2.467 -13.968,-2.467 h -8.232 c -3.343,0 -5.687,-0.3255 -6.968,-0.9674 -1.159,-0.5808 -1.724,-1.5158 -1.724,-2.8572 0,-1.095 0,-4.4287 8.996,-4.4287 h 8.232 c 3.242,0 5.671,0.5556 7.217,1.6489 1.365,0.9674 2.093,2.2404 2.216,3.8803 h 8.287 c -0.12,-4.2274 -1.73,-7.4298 -4.801,-9.5174 -3.121,-2.1235 -7.928,-3.19881 -14.291,-3.19881 h -5.488 c -2.766,0 -5.256,0.1888 -7.399,0.56281 -2.167,0.3776 -4.121,1.0069 -5.814,1.8682 -1.738,0.8883 -3.094,2.1236 -4.027,3.6718 -0.933,1.5445 -1.408,3.4343 -1.408,5.6154 0,3.8983 1.451,6.7303 4.31,8.4152 2.796,1.647 7.385,2.4472 14.03,2.4472 h 8.894 c 2.967,0 5.103,0.3326 6.345,0.9853 1.135,0.597 1.685,1.5266 1.685,2.8392 0,1.4277 -0.591,2.467 -1.809,3.1791 -1.305,0.7624 -3.535,1.149 -6.627,1.149 h -9.248 c -6.319,0 -9.526,-1.8125 -9.789,-5.531 h -8.287 c 0.118,4.2291 1.729,7.4316 4.8,9.521 3.122,2.1217 7.93,3.1988 14.292,3.1988 h 6.505 c 12.373,0 18.648,-3.9253 18.648,-11.6661 0,-3.8372 -1.54,-6.644 -4.577,-8.345"
+           fill="#7BFFA6"
+           id="path2694"
+           style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1" />
+      </g>
+    </clipPath>
+  </defs>
+</svg>

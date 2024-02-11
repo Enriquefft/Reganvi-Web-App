@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { login, signup } from '../reducers/userReducers';
 import { Container, Row, Col, Form, Card, Dropdown } from 'react-bootstrap';
 
-import { countryCodes } from '../utils'
+import { countryCodes, genderMapping } from '../utils'
 
-function UserSignup({ handleShowLogin }) {
+function UserSignup({ userInfo, handleShowLogin }) {
       const dispatch = useDispatch();
 
       const [email, setEmail] = useState('')
@@ -61,53 +61,63 @@ function UserSignup({ handleShowLogin }) {
                         <Col xs={12} sm={8} md={6}>
                               <Card className='py-3' style={{ borderRadius: '15px' }}>
                                     <Card.Body className='flex flex-col items-center ' >
-                                          <h2 className="text-center mb-4">Signup</h2>
-                                          <Form onSubmit={handleSignup} className='flex flex-col items-center ' >
+                                          <h2 className="text-center mb-4">Regístrese</h2>
+                                          <Form onSubmit={handleSignup} className='flex flex-col items-center  w-3/4' >
                                                 <Form.Group controlId="first_name" className='w-full'>
-                                                      <Form.Label>First Name</Form.Label>
+                                                      <Form.Label>Primer Nombre</Form.Label>
                                                       <Form.Control
                                                             type="first_name"
-                                                            placeholder="Enter first name"
+                                                            placeholder="Ingrese su primer nombre"
                                                             value={first_name}
                                                             onChange={(e) => setFirstName(e.target.value)}
-                                                            className='rounded mb-3'
+                                                            className='rounded mb-3 border'
                                                       />
                                                 </Form.Group>
                                                 <Form.Group controlId="last_name" className='w-full'>
-                                                      <Form.Label>Last Name</Form.Label>
+                                                      <Form.Label>Apellido</Form.Label>
                                                       <Form.Control
                                                             type="last_name"
-                                                            placeholder="Enter last name"
+                                                            placeholder="Ingrese su apellido"
                                                             value={last_name}
                                                             onChange={(e) => setLastName(e.target.value)}
-                                                            className='rounded mb-3'
+                                                            className='rounded mb-3 border'
                                                       />
                                                 </Form.Group>
 
                                                 <Form.Group controlId="email" className='w-full'>
-                                                      <Form.Label>Email Address <span className='text-red-400'>*</span></Form.Label>
+                                                      <Form.Label>Correo Electrónico <span className='text-red-400'>*</span></Form.Label>
                                                       <Form.Control
                                                             type="email"
-                                                            placeholder="Enter email"
+                                                            placeholder="Ingrese su correo electrónico"
                                                             value={email}
                                                             onChange={(e) => setEmail(e.target.value)}
                                                             required
-                                                            className='rounded mb-3'
+                                                            className='rounded mb-3 border'
                                                       />
                                                 </Form.Group>
 
                                                 <Form.Group controlId="phone_number" className='w-full'>
-                                                      <Form.Label>Phone Number <span className='text-red-400'>*</span></Form.Label>
+                                                      <Form.Label>Número de Teléfono <span className='text-red-400'>*</span></Form.Label>
                                                       <Row className='items-center mb-3'>
-                                                            <Col xs={3} className='items-center'>
+                                                            <Col xs={3} className='items-center pr-0'>
                                                                   <Dropdown className='rounded' onSelect={handleCountryCodeChange}>
-                                                                        <Dropdown.Toggle className='rounded mx-0 w-20 bg-white ' variant='light' id="country-code-dropdown">
-                                                                              {phone_number_code}
+                                                                        <Dropdown.Toggle className='w-full bg-white d-flex justify-content-between align-items-center ' variant='light' id="country-code-dropdown"
+                                                                        style={{
+                                                                              borderRadius: '4px 0 0 4px', // Adjust the border-radius as needed
+                                                                              borderTop: '1px solid #dee2e6',
+                                                                              borderLeft: '1px solid #dee2e6',
+                                                                              borderBottom: '1px solid #dee2e6',
+                                                                              borderRight: '0',
+                                                                            }}
+                                                                        
+                                                                        >
+                                                                              {(phone_number_code !== "") ? phone_number_code : (<div className="text-gray-500">-</div>)}
                                                                         </Dropdown.Toggle>
                                                                         <Dropdown.Menu
                                                                               align="start"
-                                                                              onChange={(e) => setPhoneNumberCode(e.target.value)}
-                                                                              flip={false}
+                                                                              onChange={(e) => handleCountryCodeChange(e.target.value)}
+                                                                              style={{ maxHeight: '300px', overflowY: 'auto', }}
+                                                                              popperConfig={{ modifiers: [{ name: 'offset', options: {offset: [0, -150]}, }], }} 
                                                                         >
                                                                               {countryCodes.map((country) => (
                                                                                     <Dropdown.Item key={country.code} eventKey={country.code}>
@@ -117,62 +127,80 @@ function UserSignup({ handleShowLogin }) {
                                                                         </Dropdown.Menu>
                                                                   </Dropdown>
                                                             </Col>
-                                                            <Col xs={9} >
+                                                            <Col xs={9} className='pl-0'>
                                                                   <Form.Control
                                                                         type="phone_number"
-                                                                        placeholder="Enter phone number"
+                                                                        placeholder="Ingrese su número de teléfono"
                                                                         value={phone_number}
                                                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                                                         required
-                                                                        className='rounded mx-0'
+                                                                        className='mx-0 border'
+                                                                        style={{borderRadius: '0 4px 4px 0', }}
                                                                   />
                                                             </Col>
                                                       </Row>
                                                 </Form.Group>
 
                                                 <Form.Group controlId="gender" className='w-full'> 
-                                                      <Form.Label>Gender <span className='text-red-400'>*</span></Form.Label>
-                                                      <Form.Select
-                                                            value={gender}
-                                                            onChange={(e) => setGender(e.target.value)}
-                                                            required
-                                                            className='rounded mb-3 w-full py-2 px-3 bg-gray-50'
-                                                      >
-                                                            <option value="">Select Gender</option>
-                                                            <option value="male">Male</option>
-                                                            <option value="female">Female</option>
-                                                            <option value="other">Other</option>
-                                                      </Form.Select>
+                                                      <Form.Label>Género <span className='text-red-400'>*</span></Form.Label>
+                                                      <Dropdown className='rounded mb-3' onSelect={setGender} required>
+                                                            <Dropdown.Toggle className='rounded w-full bg-white border d-flex justify-content-between align-items-center' variant='light' id="gender-dropdown">
+                                                                  {(gender !== "") ? gender : (<div className="text-gray-500">Seleccione su género</div>)}
+                                                            </Dropdown.Toggle>
+                                                            <Dropdown.Menu
+                                                                  align="start"
+                                                                  onChange={(e) => setGender(e.target.value)}
+                                                                  style={{ maxHeight: '300px', overflowY: 'auto', }}
+                                                                  popperConfig={{ modifiers: [{ name: 'offset', options: {offset: [50, -100]} }], }}
+                                                            >
+                                                                  <Dropdown.Header>Género</Dropdown.Header>
+                                                                  {Object.keys(genderMapping).map((key) => (
+                                                                        <Dropdown.Item key={key} eventKey={genderMapping[key]}>
+                                                                              {genderMapping[key]}
+                                                                        </Dropdown.Item>
+                                                                  ))}
+                                                            </Dropdown.Menu>
+                                                      </Dropdown>       
                                                 </Form.Group>
 
                                                 <Form.Group controlId="password" className='w-full'>
-                                                      <Form.Label>Password <span className='text-red-400'>*</span></Form.Label>
+                                                      <Form.Label>Contraseña <span className='text-red-400'>*</span></Form.Label>
                                                       <Form.Control
                                                             type="password"
-                                                            placeholder="Password"
+                                                            placeholder="Ingrese su contraseña"
                                                             value={password}
                                                             onChange={(e) => setPassword(e.target.value)}
                                                             required
-                                                            className='rounded mb-3'
+                                                            className='rounded mb-3 border'
                                                       
                                                       />
                                                 </Form.Group>
 
                                                 <Form.Group controlId="repeat_password" className='w-full'>
-                                                      <Form.Label>Repeat Password <span className='text-red-400'>*</span></Form.Label>
+                                                      <Form.Label>Repetir Contraseña <span className='text-red-400'>*</span></Form.Label>
                                                       <Form.Control
                                                             type="password"
-                                                            placeholder="Repeat Password"
+                                                            placeholder="Repita su contraseña"
                                                             value={repeat_password}
                                                             onChange={(e) => setRepeatPassword(e.target.value)}
                                                             required
-                                                            className='rounded mb-3'
+                                                            className='rounded mb-3 border'
                                                       
                                                       />
                                                 </Form.Group>
-                                                <button type="submit" className="m-2 w-32 p-2 text-white bg-green-600 rounded-xl hover:bg-gray-400">
-                                                      Signup
-                                                </button>
+                                                {
+                                                      userInfo.loading == true ? (
+                                                            <img
+                                                                  src="/ring_black.svg"
+                                                                  alt="Loading..."
+                                                                  className="max-h-32 "
+                                                            />
+                                                      ) : (
+                                                            <button type="submit" className="m-2 w-32 p-2 text-white bg-green-600 rounded-xl hover:bg-gray-400">
+                                                                  Registrarme
+                                                            </button>
+                                                      )
+                                                }
                                                 
                                           </Form>
                                           {
@@ -180,7 +208,7 @@ function UserSignup({ handleShowLogin }) {
                                                       <p className='text-red-400'>{signupError}</p>
                                                 ) : (null)
                                           }
-                                          <p>Already got an account? <button className='text-blue-400 mt-2 hover:text-black' onClick={handleShowLogin}>login</button></p>
+                                          <p>¿Ya tiene una cuenta? <button className='text-blue-400 mt-2 hover:text-black' onClick={handleShowLogin}>Inicie sesión</button></p>
                                           
                                     </Card.Body>
                               </Card>

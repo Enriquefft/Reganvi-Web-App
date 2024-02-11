@@ -2,7 +2,7 @@ from rest_framework import status
 import json
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from ..models import ProductInstance, Product, Company, ProductIndustry
+from ..models import ProductInstance, Product, Company, CotizationLog
 from ..serializers.product_serializers import ProductInstanceSerializer, ProductSerializer, ProductInstanceCotizationSerializer
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
@@ -35,28 +35,19 @@ def convert_units(amount, from_unit, to_unit):
 
 
 class GetProductOptionsView(APIView):
-      permission_classes = [IsAuthenticated]
+      serializer_class = ProductSerializer
 
       def get(self, request, *args, **kwargs):
-            product_names = Product.objects.values_list('name', flat=True).distinct()
-            industries = ProductIndustry.objects.values_list('name', flat=True).distinct()
-
-            product_names_list = list(product_names)
-            industries_list = list(industries)
-
-            response_data = {
-                  'product_names': product_names_list,
-                  'industries': industries_list,
-            }
-
-            return Response(response_data, status=status.HTTP_200_OK)
+            products = Product.objects.all()
+            serializer = self.serializer_class(products, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
 class ProductInstanceCreateView(APIView):
       """
       Create a new ProductInstance.
-      Validates that the Company RUC, the Product name, and the ProductIndustry name exist by using the serializer.
+      Validates that the Company RUC, the Product name, by using the serializer.
       """
       serializer_class = ProductInstanceSerializer
       permission_classes = [IsAdminUser]
@@ -83,11 +74,12 @@ class ProductInstanceCotizator(APIView):
             cotization_type = request.data.get('type', '') #bulk, pressed, ground or raw
             amount = float(request.data.get('amount', 0))
             unit_of_measure = request.data.get('unit_of_measure', '') #KG, TON, G, LB, L, ML, M3, CM3, EA, DOZ, M, CM, INCH
-            industry_name = request.data.get('industry', '') 
 
+            product = Product.objects.get(
+                  name=product_name
+            )
             product_instances = ProductInstance.objects.filter(
-                  product__name=product_name,
-                  industry__name=industry_name
+                  product=product,
             )
 
             if len(product_instances) == 0:
@@ -99,16 +91,21 @@ class ProductInstanceCotizator(APIView):
             for product_instance in product_instances:
                   try:
                         # Calculate cotization based on the given type and unit_of_measure
-                        if cotization_type == 'bulk':
+                        if cotization_type == 'molido':
                               cotization_price = amount * float(product_instance.bulk_price)
-                        elif cotization_type == 'pressed':
+                              product_type = 1
+                        elif cotization_type == 'prensado':
                               cotization_price = amount * float(product_instance.pressed_price)
-                        elif cotization_type == 'ground':
+                              product_type = 2
+                        elif cotization_type == 'granel':
                               cotization_price = amount * float(product_instance.ground_price)
-                        elif cotization_type == 'raw':
+                              product_type = 3
+                        elif cotization_type == 'paletizado':
                               cotization_price = amount * float(product_instance.raw_material_price)
+                              product_type = 4
                         else:
-                              return Response({'error': 'Invalid cotization type.'}, status=status.HTTP_400_BAD_REQUEST)
+                              cotization_price = amount * (float(product_instance.bulk_price) + float(product_instance.pressed_price) + float(product_instance.ground_price) + float(product_instance.raw_material_price))/4
+                              product_type = 5
 
                         # Convert the amount to the corresponding unit_of_measure
                         if unit_of_measure != product_instance.unit_of_measure:
@@ -136,6 +133,15 @@ class ProductInstanceCotizator(APIView):
 
             # Serialize cotizations
             serializer = self.serializer_class(cotizations, many=True)
+
+            log = CotizationLog.objects.create(
+                  user=request.user,
+                  product=product,
+                  product_type=product_type,
+                  amount=amount,
+                  unit_of_measure=unit_of_measure,
+            )
+            log.save()
 
             return Response(serializer.data, status=status.HTTP_200_OK)
 

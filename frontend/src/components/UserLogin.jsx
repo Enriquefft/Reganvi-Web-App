@@ -33,13 +33,13 @@ function UserLogin({ userInfo, handleShowLogin }) {
                         <Col xs={12} sm={8} md={6}>
                               <Card className='py-3'  style={{ borderRadius: '15px' }}>
                                     <Card.Body className='flex flex-col items-center ' >
-                                          <h2 className="text-center mb-4">Login</h2>
-                                          <Form onSubmit={handleLogin} className='flex flex-col items-center ' >
+                                          <h2 className="text-center mb-4">Iniciar Sesión</h2>
+                                          <Form onSubmit={handleLogin} className='flex flex-col items-center w-3/4 ' >
                                                 <Form.Group controlId="email" className='w-full'>
-                                                      <Form.Label>Email Address</Form.Label>
+                                                      <Form.Label>Correo Electrónico</Form.Label>
                                                       <Form.Control
                                                             type="email"
-                                                            placeholder="Enter email"
+                                                            placeholder="Ingrese su correo electrónico"
                                                             value={email}
                                                             onChange={(e) => setEmail(e.target.value)}
                                                             required
@@ -48,10 +48,10 @@ function UserLogin({ userInfo, handleShowLogin }) {
                                                 </Form.Group>
 
                                                 <Form.Group controlId="password" className='w-full'>
-                                                      <Form.Label>Password</Form.Label>
+                                                      <Form.Label>Contraseña</Form.Label>
                                                       <Form.Control
                                                             type="password"
-                                                            placeholder="Password"
+                                                            placeholder="Ingrese su contraseña"
                                                             value={password}
                                                             onChange={(e) => setPassword(e.target.value)}
                                                             required
@@ -59,9 +59,19 @@ function UserLogin({ userInfo, handleShowLogin }) {
                                                       
                                                       />
                                                 </Form.Group>
-                                                <button type="submit" className="m-2 w-32 p-2 text-white bg-green-600 rounded-xl hover:bg-gray-400">
-                                                      Login
-                                                </button>
+                                                {
+                                                      userInfo.loading == true ? (
+                                                            <img
+                                                                  src="/ring_black.svg"
+                                                                  alt="Loading..."
+                                                                  className="max-h-32 "
+                                                            />
+                                                      ) : (
+                                                            <button type="submit" className="m-2 w-32 p-2 text-white bg-green-600 rounded-xl hover:bg-gray-400">
+                                                                  Iniciar Sesión
+                                                            </button>
+                                                      )
+                                                }
                                                 
                                           </Form>
                                           {
@@ -69,7 +79,7 @@ function UserLogin({ userInfo, handleShowLogin }) {
                                                       <p className='text-red-400'>{loginError}</p>
                                                 ) : (null)
                                           }
-                                          <p>No account? <button className='text-blue-400 mt-2 hover:text-black' onClick={handleShowLogin}>signup</button></p>
+                                          <p>¿No tiene una cuenta? <button className='text-blue-400 mt-2 hover:text-black' onClick={handleShowLogin}>Regístrese</button></p>
                                     </Card.Body>
                               </Card>
                         </Col>

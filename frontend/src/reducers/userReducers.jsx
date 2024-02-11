@@ -190,21 +190,44 @@ export const logout = createAsyncThunk("userInfo/logout", async ({ token }) => {
 export const userInfoSlice = createSlice({
       name: "userInfo",
       initialState,
-      reducers: {},
+      reducers: {
+            resetUserInfo: (state) => {
+                  localStorage.removeItem("userInfo")
+                  return {
+                        ...state,
+                        userInfo: {expiry:null,token:null,user:null, loading:false},
+                        userChildren:{reservations:null,eventinscriptions:null, materialpurchases:null, chats_student:null, reviews:null, refundrequests:null, eventrefundrequests:null, loading:false},
+                        error: null,
+                  }
+
+            }
+      }, // Se puede añadir reducer de logout 
       extraReducers: (builder) => {
             builder
+            .addCase(login.pending, (state, action) => {
+                  return {
+                        ...state, 
+                        userInfo:{...state.userInfo, loading:true},
+                  }
+            })
             .addCase(login.fulfilled, (state, action) => {
                   localStorage.setItem("userInfo", JSON.stringify(action.payload))
                   return {
                         ...state, 
-                        userInfo:action.payload
+                        userInfo:{...action.payload, loading:false},
                   }
             })
             .addCase(login.rejected, (state, action) => {
                   return {
                         ...state, 
-                        userInfo:{expiry:null,token:null,user:null},
+                        userInfo:{expiry:null,token:null,user:null, loading:false},
                         error: action.error.message,
+                  }
+            })
+            .addCase(update.pending, (state, action) => {
+                  return {
+                        ...state, 
+                        userInfo:{...state.userInfo, loading:true}
                   }
             })
             .addCase(update.fulfilled, (state, action) => {
@@ -213,12 +236,19 @@ export const userInfoSlice = createSlice({
                   localStorage.setItem("userInfo", JSON.stringify(existingUserInfo))
                   return {
                         ...state, 
-                        userInfo:{...state.userInfo, user:action.payload}
+                        userInfo:{...state.userInfo, user:action.payload, loading:false}
                   }
             })
             .addCase(update.rejected, (state, action) => {
                   return {
                         ...state, 
+                        userInfo:{...state.userInfo, loading:false}
+                  }
+            })
+            .addCase(imageUpdate.pending, (state, action) => {
+                  return {
+                        ...state, 
+                        userInfo:{...state.userInfo, loading:true}
                   }
             })
             .addCase(imageUpdate.fulfilled, (state, action) => {
@@ -227,19 +257,27 @@ export const userInfoSlice = createSlice({
                   localStorage.setItem("userInfo", JSON.stringify(existingUserInfo))
                   return {
                         ...state, 
-                        userInfo:{...state.userInfo, user:action.payload}
+                        userInfo:{...state.userInfo, user:action.payload, loading:false}
                   }
             })
             .addCase(imageUpdate.rejected, (state, action) => {
                   return {
                         ...state, 
+                        userInfo:{...state.userInfo, loading:false}
+                  }
+            })
+            .addCase(logout.pending, (state, action) => {
+                  return {
+                        ...state,
+                        userInfo: {...state.userInfo, loading:true},
+                        userChildren:{...state.userChildren, loading:false},
                   }
             })
             .addCase(logout.fulfilled, (state, action) => {
                   localStorage.removeItem("userInfo");
                   return {
                         ...state,
-                        userInfo: {expiry:null,token:null,user:null},
+                        userInfo: {expiry:null,token:null,user:null, loading:false},
                         error: null,
                   }
             })
@@ -247,11 +285,13 @@ export const userInfoSlice = createSlice({
                   localStorage.removeItem("userInfo");
                   return {
                         ...state,
-                        userInfo: {expiry:null,token:null,user:null},
+                        userInfo: {expiry:null,token:null,user:null, loading:false},
                         error: null,
                   }
             })
       },
 });
+
+export const { resetUserInfo } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer

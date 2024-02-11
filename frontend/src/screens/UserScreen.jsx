@@ -43,7 +43,7 @@ function UserScreen({ userInfo }) {
                   ) : showLogin ? (
                         <UserLogin userInfo={userInfo} handleShowLogin={handleShowLogin} />
                   ) : (
-                        <UserSignup handleShowLogin={handleShowLogin} />
+                        <UserSignup  userInfo={userInfo} handleShowLogin={handleShowLogin} />
                   )
             }
             </div>

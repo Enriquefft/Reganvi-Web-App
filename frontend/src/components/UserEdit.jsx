@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { update, imageUpdate } from '../reducers/userReducers';
 import { Container, Row, Col, Form, Card, Dropdown } from 'react-bootstrap';
 
-import { countryCodes } from '../utils'
+import { countryCodes, genderMapping } from '../utils'
 
 function UserEdit({ userInfo, handleShowEditForm }) {
       const dispatch = useDispatch()
@@ -16,11 +16,7 @@ function UserEdit({ userInfo, handleShowEditForm }) {
       const raw_phone_number = userInfo.user.phone_number
       const [phone_number_code, setPhoneNumberCode] = useState(raw_phone_number.substring(0, raw_phone_number.length - 9))
       const [phone_number, setPhoneNumber] = useState(raw_phone_number.substring(phone_number_code.length, raw_phone_number.length))
-      const genderMapping = {
-            1: 'male',
-            2: 'female',
-            0: 'other',
-      }
+      
       const [gender, setGender] = useState(genderMapping[userInfo.user.gender])
 
       const [repeat_password, setRepeatPassword] = useState('')
@@ -117,27 +113,27 @@ function UserEdit({ userInfo, handleShowEditForm }) {
                                     <Col xs={12} md={7} className="text-center mx-sm-3 mx-md-0">
                                           <div className="flex flex-col items-start justify-top h-full">
                                                 <h2 className="text-2xl font-semibold my-4">
-                                                      Edit Profile
+                                                      Editar Perfil
                                                 </h2>
                                                 <Form disabled readOnly onSubmit={(e) => {e.preventDefault(); handleUpdate()}} className='flex flex-col items-start text-start ' >
                                                       <Form.Group controlId="first_name" className='w-full'>
-                                                            <Form.Label>First Name</Form.Label>
+                                                            <Form.Label>Primer Nombre</Form.Label>
                                                             <Form.Control
                                                                   type="first_name"
-                                                                  placeholder="Enter first name"
+                                                                  placeholder="Ingrese su primer nombre"
                                                                   value={first_name}
                                                                   onChange={(e) => setFirstName(e.target.value)}
-                                                                  className='rounded mb-3'
+                                                                  className='rounded mb-3 border'
                                                             />
                                                       </Form.Group>
                                                       <Form.Group controlId="last_name" className='w-full'>
-                                                            <Form.Label>Last Name</Form.Label>
+                                                            <Form.Label>Apellido</Form.Label>
                                                             <Form.Control
                                                                   type="last_name"
-                                                                  placeholder="Enter last name"
+                                                                  placeholder="Ingrese su apellido"
                                                                   value={last_name}
                                                                   onChange={(e) => setLastName(e.target.value)}
-                                                                  className='rounded mb-3'
+                                                                  className='rounded mb-3 border'
                                                             />
                                                       </Form.Group>
 
@@ -185,7 +181,7 @@ function UserEdit({ userInfo, handleShowEditForm }) {
                                                                               variant='light' 
                                                                               id="phone-number-code-dropdown"
                                                                               style={{
-                                                                                    borderRadius: '8px 0 0 8px', // Adjust the border-radius as needed
+                                                                                    borderRadius: '4px 0 0 4px', // Adjust the border-radius as needed
                                                                                     borderTop: '1px solid #dee2e6',
                                                                                     borderLeft: '1px solid #dee2e6',
                                                                                     borderBottom: '1px solid #dee2e6',
@@ -225,7 +221,7 @@ function UserEdit({ userInfo, handleShowEditForm }) {
                                                                               value={phone_number}
                                                                               onChange={(e) => setPhoneNumber(e.target.value)}
                                                                               style={{
-                                                                                    borderRadius: '0 8px 8px 0', // Adjust the border-radius as needed
+                                                                                    borderRadius: '0 4px 4px 0', // Adjust the border-radius as needed
                                                                                   }}
                                                                                   className='rounded-l-none mx-0 border'
                                                                               />
@@ -234,47 +230,58 @@ function UserEdit({ userInfo, handleShowEditForm }) {
                                                       </Form.Group>
 
                                                       <Form.Group controlId="email" className='w-full'>
-                                                            <Form.Label>Email Address</Form.Label>
+                                                            <Form.Label>Correo Electrónico</Form.Label>
                                                             <Form.Control
                                                                   type="email"
-                                                                  placeholder="Enter email"
+                                                                  placeholder="Ingrese su correo electrónico"
                                                                   value={email}
                                                                   onChange={(e) => setEmail(e.target.value)}
-                                                                  className='rounded mb-3'
+                                                                  className='rounded mb-3 border'
                                                             />
                                                       </Form.Group>
 
                                                       <Form.Group controlId="password" className='w-full'>
-                                                            <Form.Label>Change Password</Form.Label>
+                                                            <Form.Label>Cambiar Contraseña</Form.Label>
                                                             <Form.Control
                                                                   type="password"
-                                                                  placeholder="Enter New Password"
+                                                                  placeholder="Ingrese su contraseña nueva"
                                                                   value={password}
                                                                   onChange={(e) => setPassword(e.target.value)}
-                                                                  className='rounded mb-3'
+                                                                  className='rounded mb-3 border'
                                                             
                                                             />
                                                       </Form.Group>
 
                                                       <Form.Group controlId="repeat_password" className='w-full'>
-                                                            <Form.Label>Repeat New Password</Form.Label>
+                                                            <Form.Label>Repetir Nueva Contraseña</Form.Label>
                                                             <Form.Control
                                                                   type="password"
-                                                                  placeholder="Repeat New Password"
+                                                                  placeholder="Repita su contraseña nueva"
                                                                   value={repeat_password}
                                                                   onChange={(e) => setRepeatPassword(e.target.value)}
-                                                                  className='rounded mb-3'
+                                                                  className='rounded mb-3 border'
                                                             
                                                             />
                                                       </Form.Group>
-                                                      <div className="flex flex-wrap mt-2">
-                                                            <button type="submit" className="m-2 w-32 p-2 text-white bg-blue-600 rounded-xl hover:bg-gray-400" >
-                                                                  Save
-                                                            </button>
-                                                            <button className="m-2 w-32 p-2 text-black border-2 rounded-xl bg-white  hover:text-gray-400" onClick={(e) => {e.preventDefault(); handleCancel()}} >
-                                                                  Cancel
-                                                            </button> 
-                                                      </div>
+                                                      {
+                                                            userInfo.loading == true ? (
+                                                                  <img
+                                                                        src="/tail_blue_fast.svg"
+                                                                        alt="Loading..."
+                                                                        className="max-h-24"
+                                                                  />
+                                                            ) : (
+                                                                  <div className="flex flex-wrap mt-2">
+                                                                        <button type="submit" className="mr-2 my-2 w-32 p-1 text-white bg-blue-600 rounded-xl hover:bg-gray-400" >
+                                                                              Guardar
+                                                                        </button>
+                                                                        <button className="m-2 w-32 p-1 text-black border-2 rounded-xl bg-white  hover:text-gray-400" onClick={(e) => {e.preventDefault(); handleCancel()}} >
+                                                                              Cancelar
+                                                                        </button> 
+                                                                  </div>
+                                                            )
+                                                      }
+                                                      
                                                       {
                                                             updateError !== '' ? (
                                                                   <p className='text-red-400'>{updateError}</p>
